@@ -4,41 +4,34 @@
     v-for="(item, index) in data"
     :key="index"
   >
-    <!-- <router-link
-      :to="{ name: 'ProfilePage', params: { name: data.item.login.username } }"
-    > -->
     <div class="flex space-x-4 p-3">
-      <img :src="item.picture.thumbnail" class="rounded-full" />
+      <img :src="item.picture" class="rounded-full" />
     </div>
     <div class="flex-grow p-3 items-start">
       <div class="font-semibold">
-        {{ formatName(item.name.first, item.name.last) }}
+        {{ item.name }}
       </div>
       <div class="text-sm text-gray-500">
-        {{ item.login.username }}
+        {{ item.login }}
       </div>
     </div>
-    <!-- </router-link> -->
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
+import { IUser } from "@/models/IUser";
 
 export default defineComponent({
   name: "user-item",
   props: {
     data: {
-      type: Array as any,
+      type: Array as PropType<IUser[]>,
       default: [],
     },
   },
   setup() {
-    function formatName(firstName: string, lastName: string) {
-      return [firstName, lastName].join(" ");
-    }
-
-    return { formatName };
+    return {};
   },
 });
 </script>
