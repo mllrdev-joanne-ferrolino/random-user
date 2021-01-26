@@ -8,7 +8,10 @@
     >
       <user-item :data="data"></user-item>
     </div>
-    <pagination class="mx-auto"></pagination>
+    <pagination
+      :totalRecords="totalRecords"
+      @pageNumber="loadUsers"
+    ></pagination>
   </div>
 </template>
 
@@ -26,8 +29,26 @@ export default defineComponent({
     Pagination,
   },
   setup() {
-    const pageResults = 10;
-    const { isLoading: loading, data, error, execute } = useFetchUsers();
+    const totalRecords = 10;
+    const pageNumber = 1;
+    const {
+      isLoading: loading,
+      data,
+      error,
+      execute: fetchUsers,
+    } = useFetchUsers();
+
+    function loadUsers(pageNumber: number) {
+      if (!error.value) {
+        fetchUsers(pageNumber, totalRecords);
+      } else {
+        console.log(error);
+      }
+    }
+
+    onMounted(() => {
+      loadUsers(pageNumber);
+    });
 
     // const { state: showM, toggle, open, close } = useToggleState();
 
@@ -39,10 +60,7 @@ export default defineComponent({
     //   show toaster
     // })
 
-    onMounted(() => {
-      execute(pageResults);
-    });
-    return { loading, data, error };
+    return { loading, data, error, totalRecords, loadUsers };
   },
 });
 </script>

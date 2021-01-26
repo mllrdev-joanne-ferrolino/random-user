@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import { RouteNames } from "@/router/route-names";
 
 function loadView(view: string) {
   return () => import(/* webpackChunkName: "about" */ `../views/${view}.vue`);
@@ -7,12 +8,12 @@ function loadView(view: string) {
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "UsersPage",
+    name: RouteNames.USERS,
     component: loadView("UsersPage"),
   },
   {
     path: "/user/:name",
-    name: "ProfilePage",
+    name: RouteNames.PROFILE,
     component: loadView("ProfilePage"),
   },
 ];

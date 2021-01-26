@@ -1,12 +1,7 @@
 import { IUser } from "@/models/IUser";
 import { apiService } from "@/services/api.service";
-import { ref } from "vue";
 
-function fetchUsers() {
-  apiService.get;
-}
-
-function normalizeUser(result: any) {
+function mapUser(result: any) {
   const user: IUser = {
     name: [result.name.first, result.name.last].join(" "),
     email: result.email,
@@ -16,17 +11,12 @@ function normalizeUser(result: any) {
   return user;
 }
 
-function retrieveUsers(pageResults: number) {
-  // const data = ref([]);
-  // apiService
-  //   .getAll(pageResults)
-  //   .then((response) => {
-  //     data.value = response.data.results.map(normalizeUser);
-  //   })
-  //   .catch((e) => {
-  //     console.log(e);
-  //   });
-  // return data;
+function fetchUsers(pageResults: number) {
+  return apiService.get(`/?results=${pageResults}`);
 }
 
-export const userService = { normalizeUser, retrieveUsers };
+function fetchUsersByPage(pageNumber: number, results: number) {
+  return apiService.get(`/?page=${pageNumber}&results=${results}&seed=set`);
+}
+
+export const userService = { mapUser, fetchUsers, fetchUsersByPage };
