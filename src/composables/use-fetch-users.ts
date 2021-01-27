@@ -1,28 +1,26 @@
 import { ref } from "vue";
 import { IUser } from "@/models/IUser";
 import { userService } from "@/services/user.service";
-import useFormatUsers from "@/composables/use-format-users";
+import userFactory from "@/factory/user";
 
 export default () => {
   const isLoading = ref<boolean>(false);
   const data = ref<IUser[]>([]);
   const error = ref<string>("");
-  const { mapUser } = useFormatUsers();
+  const { toModel } = userFactory();
 
-  function execute(pageNumber: number, results: number) {
+  async function execute(pageNumber: number, results: number) {
     isLoading.value = true;
-    userService
-      .fetchUsersByPage(pageNumber, results)
-      .then((res: any) => {
-        data.value = res.data.results.map(mapUser);
-      })
-      .catch((err: Error) => {
-        console.log(err);
-        error.value = err.message;
-      })
-      .finally(() => {
-        isLoading.value = false;
-      });
+    try {
+      const response = await userService.fetchUsersByPage(pageNumber, results);
+      if (response) {
+        data.value = response.data.results.map(toModel);
+      }
+    } catch (error) {
+      console.log(error);
+      error.value = error.message;
+    }
+    isLoading.value = false;
   }
 
   // const info = ref({});

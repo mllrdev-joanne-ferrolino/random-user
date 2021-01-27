@@ -6,21 +6,25 @@
       v-if="!loading && data && data.length"
       class="mx-auto flex flex-col w-1/4 container space-y-4"
     >
-      <user-item :data="data"></user-item>
+      <user-item
+        v-for="(item, index) in data"
+        :key="index"
+        :user="item"
+      ></user-item>
     </div>
     <pagination
-      :totalRecords="totalRecords"
+      :totalRecords="resultsPerPage"
       @pageNumber="loadUsers"
+      :pageCount="pageCount"
     ></pagination>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import UserItem from "@/components/UserItem.vue";
 import Pagination from "@/components/Pagination.vue";
 import useFetchUsers from "@/composables/use-fetch-users";
-// import useToggleState from "@/composables/use-toggle-state";
 
 export default defineComponent({
   name: "UsersPage",
@@ -29,8 +33,9 @@ export default defineComponent({
     Pagination,
   },
   setup() {
-    const totalRecords = 10;
-    const pageNumber = 1;
+    const resultsPerPage = 10;
+    const defaultPageNumber = 1;
+    const pageCount = 6;
     const {
       isLoading: loading,
       data,
@@ -39,28 +44,19 @@ export default defineComponent({
     } = useFetchUsers();
 
     function loadUsers(pageNumber: number) {
-      if (!error.value) {
-        fetchUsers(pageNumber, totalRecords);
+      console.log(pageNumber);
+      if (!error.value || pageNumber < 1 || pageNumber < pageCount) {
+        fetchUsers(pageNumber, resultsPerPage);
       } else {
         console.log(error);
       }
     }
 
     onMounted(() => {
-      loadUsers(pageNumber);
+      loadUsers(defaultPageNumber);
     });
 
-    // const { state: showM, toggle, open, close } = useToggleState();
-
-    // onDone(() => {
-
-    // })
-
-    // onError(() => {
-    //   show toaster
-    // })
-
-    return { loading, data, error, totalRecords, loadUsers };
+    return { loading, data, error, resultsPerPage, loadUsers, pageCount };
   },
 });
 </script>

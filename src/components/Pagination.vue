@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, createApp, onMounted } from "vue";
 import usePagination from "@/composables/use-pagination";
 
 export default defineComponent({
@@ -61,18 +61,22 @@ export default defineComponent({
       type: Number,
       default: 1,
     },
+    pageCount: {
+      type: Number,
+      default: 1,
+    },
   },
   setup() {
-    const pageCount = 5;
     const {
       currentPage,
       handlePageNumber,
       handleNextPage,
       handlePreviousPage,
     } = usePagination();
-
+    onMounted(() => {
+      console.log(currentPage);
+    });
     return {
-      pageCount,
       handlePageNumber,
       handleNextPage,
       currentPage,

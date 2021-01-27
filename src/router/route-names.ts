@@ -6,9 +6,3 @@ export enum RouteNames {
   USERS = "Users Page",
   PROFILE = "Profile Page",
 }
-
-createApp(App).provide("$routeNames", RouteNames);
-
-// declare module '*.vue'{
-
-// }

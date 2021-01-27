@@ -17,6 +17,7 @@ export default () => {
     if (currentPage.value > 1) {
       currentPage.value -= 1;
     }
+    // console.log("current page: ", currentPage.value);
   }
 
   return { currentPage, handlePageNumber, handleNextPage, handlePreviousPage };

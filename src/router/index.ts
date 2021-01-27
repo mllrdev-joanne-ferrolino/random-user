@@ -15,6 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     path: "/user/:name",
     name: RouteNames.PROFILE,
     component: loadView("ProfilePage"),
+    props: true,
   },
 ];
 

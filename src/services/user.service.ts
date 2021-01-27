@@ -15,8 +15,10 @@ function fetchUsers(pageResults: number) {
   return apiService.get(`/?results=${pageResults}`);
 }
 
-function fetchUsersByPage(pageNumber: number, results: number) {
-  return apiService.get(`/?page=${pageNumber}&results=${results}&seed=set`);
+async function fetchUsersByPage(pageNumber: number, results: number) {
+  return await apiService.get(
+    `/?page=${pageNumber}&results=${results}&seed=set`
+  );
 }
 
 export const userService = { mapUser, fetchUsers, fetchUsersByPage };
