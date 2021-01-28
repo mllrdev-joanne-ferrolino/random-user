@@ -11,12 +11,6 @@ const routes: Array<RouteRecordRaw> = [
     name: RouteNames.USERS,
     component: loadView("UsersPage"),
   },
-  {
-    path: "/user/:name",
-    name: RouteNames.PROFILE,
-    component: loadView("ProfilePage"),
-    props: true,
-  },
 ];
 
 const router = createRouter({

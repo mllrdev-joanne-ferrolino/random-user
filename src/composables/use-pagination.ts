@@ -2,23 +2,25 @@ import { ref } from "vue";
 
 export default () => {
   const currentPage = ref<number>(1);
+  const pageCount = 5;
 
-  function handlePageNumber(pageNumber: number) {
+  function updatePageNumber(pageNumber: number) {
     currentPage.value = pageNumber;
   }
 
-  function handleNextPage(pageCount: number) {
-    if (currentPage.value < pageCount) {
-      currentPage.value += 1;
-    }
+  function updateNextPage() {
+    currentPage.value += 1;
   }
 
-  function handlePreviousPage() {
-    if (currentPage.value > 1) {
-      currentPage.value -= 1;
-    }
-    // console.log("current page: ", currentPage.value);
+  function updatePreviousPage() {
+    currentPage.value -= 1;
   }
 
-  return { currentPage, handlePageNumber, handleNextPage, handlePreviousPage };
+  return {
+    pageCount,
+    currentPage,
+    updatePageNumber,
+    updateNextPage,
+    updatePreviousPage,
+  };
 };

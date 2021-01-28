@@ -1,45 +1,49 @@
 <template>
   <div>
-    <ul class="mx-auto flex">
-      <li class="px-3 py-2">
-        <a class="flex items-center font-bold">
-          Page {{ currentPage }} of {{ pageCount }}
-        </a>
-      </li>
-      <li :class="currentPage === 1 ? 'disabled link' : 'active link'">
-        <a
-          class="flex items-center font-bold"
-          @click="
-            handlePreviousPage();
-            $emit('pageNumber', currentPage);
-          "
+    <ul class="flex flex-row justify-center mr-5">
+      <li class="page-header mr-5">
+        <label class="mr-3 font-semibold">Results per page</label>
+        <select
+          v-model="selectedOption"
+          @change="$emit('option', selectedOption)"
         >
-          <span class="mx-1">Previous</span>
+          <option
+            :value="option"
+            v-for="(option, index) in options"
+            :key="index"
+            >{{ option }}</option
+          >
+        </select>
+      </li>
+      <li class="page-header">
+        <a class="link"> Page {{ currentPage }} of {{ pageCount }} </a>
+      </li>
+
+      <li :class="currentPage === 1 ? 'disabled' : 'active'">
+        <a class="link" @click="handlePreviousPage">
+          <span class="mx-1"><slot name="previous"></slot></span>
         </a>
       </li>
       <li
-        :class="currentPage === number ? 'selected link' : 'active link'"
+        :class="currentPage === number ? 'selected' : 'active'"
         v-for="number in pageCount"
         :key="number"
       >
         <a
           class="font-bold"
           @click="
-            handlePageNumber(number);
+            updatePageNumber(number);
             $emit('pageNumber', currentPage);
           "
           >{{ number }}</a
         >
       </li>
-      <li :class="currentPage === pageCount ? 'disabled link' : 'active link'">
+      <li :class="currentPage === pageCount ? 'disabled' : 'active'">
         <a
           class="flex items-center font-bold"
-          @click="
-            handleNextPage(pageCount);
-            $emit('pageNumber', currentPage);
-          "
+          @click="handleNextPage(pageCount)"
         >
-          <span class="mx-1">Next</span>
+          <span class="mx-1"><slot name="next"></slot></span>
         </a>
       </li>
     </ul>
@@ -47,7 +51,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, createApp, onMounted } from "vue";
+import { defineComponent, ref } from "vue";
 import usePagination from "@/composables/use-pagination";
 
 export default defineComponent({
@@ -61,44 +65,69 @@ export default defineComponent({
       type: Number,
       default: 1,
     },
-    pageCount: {
+    option: {
       type: Number,
-      default: 1,
+      default: 5,
     },
   },
-  setup() {
+  setup(props, { emit }) {
     const {
       currentPage,
-      handlePageNumber,
-      handleNextPage,
-      handlePreviousPage,
+      updatePageNumber,
+      updateNextPage,
+      updatePreviousPage,
+      pageCount,
     } = usePagination();
-    onMounted(() => {
-      console.log(currentPage);
-    });
+    const options = [5, 10, 20];
+    const selectedOption = ref<number>(props.option);
+
+    function handlePreviousPage() {
+      if (currentPage.value > 1) {
+        updatePreviousPage();
+        emit("pageNumber", currentPage.value);
+      }
+    }
+
+    function handleNextPage(pageCount: number) {
+      if (currentPage.value < pageCount) {
+        updateNextPage();
+        emit("pageNumber", currentPage.value);
+      }
+    }
+
     return {
-      handlePageNumber,
-      handleNextPage,
+      updatePageNumber,
       currentPage,
       handlePreviousPage,
+      handleNextPage,
+      options,
+      selectedOption,
+      pageCount,
     };
   },
 });
 </script>
 
 <style lang="postcss" scoped>
-.link {
-  @apply px-3 py-2 mx-1 rounded-lg cursor-pointer;
+.page-header {
+  @apply px-3 py-2;
+}
+.page-button {
+  @apply page-header mx-1 rounded-lg cursor-pointer text-sm;
 }
 .disabled {
-  @apply bg-gray-200 text-gray-500;
+  @apply page-button bg-gray-200 text-gray-500;
 }
 
 .active {
-  @apply bg-gray-200 text-gray-700 hover:bg-gray-700 hover:text-gray-200;
+  @apply page-button bg-gray-200 hover:bg-blue-200 hover:text-gray-600;
 }
 
 .selected {
-  @apply bg-gray-700 text-gray-200;
+  @apply page-button bg-blue-200;
+}
+
+.link {
+  @apply flex items-center font-bold;
 }
 </style>

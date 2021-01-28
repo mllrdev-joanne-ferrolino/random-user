@@ -24,9 +24,3 @@ export const apiService = {
     });
   },
 };
-
-// function getAll(pageNumber: number) {
-//   return http.get(`/?results=${pageNumber}`);
-// }
-
-// export const apiService = { getAll };
