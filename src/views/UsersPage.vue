@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div v-if="loading">Loading...</div>
-    <div v-if="error">Error: {{ error }}</div>
+    <div v-if="loading" class="message">
+      <p>Loading...</p>
+    </div>
+    <div v-if="error" class="message">Error: {{ error }}</div>
     <div
       v-if="!loading && data && data.length && !error"
       class="mx-auto flex flex-col w-3/4 container space-y-4"
@@ -16,7 +18,7 @@
     <pagination
       :totalRecords="resultsPerPage"
       @pageNumber="loadUsers"
-      @option="getOption"
+      @option="updateResults"
     >
       <template #previous>Previous</template>
       <template #next>Next</template>
@@ -37,21 +39,18 @@ export default defineComponent({
     Pagination,
   },
   setup() {
-    const pageNumber = ref<number>(1);
     const {
       isLoading: loading,
       data,
       error,
       execute: fetchUsers,
       resultsPerPage,
+      updateResults,
+      pageNumber,
     } = useFetchUsers();
 
     function loadUsers(pageNumber: number) {
       fetchUsers(pageNumber, resultsPerPage.value);
-    }
-    function getOption(option: number) {
-      resultsPerPage.value = option;
-      fetchUsers(pageNumber.value, resultsPerPage.value);
     }
     onMounted(() => {
       loadUsers(pageNumber.value);
@@ -63,10 +62,14 @@ export default defineComponent({
       error,
       resultsPerPage,
       loadUsers,
-      getOption,
+      updateResults,
     };
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="postcss" scoped>
+.message {
+  @apply h-48 mx-auto flex flex-wrap content-center justify-center font-semibold;
+}
+</style>

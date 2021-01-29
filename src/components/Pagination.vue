@@ -5,11 +5,14 @@
         <label class="mr-3 font-semibold">Results per page</label>
         <select
           v-model="selectedOption"
-          @change="$emit('option', selectedOption)"
+          @change="
+            $emit('option', selectedOption);
+            $emit('pageNumber', currentPage);
+          "
         >
           <option
             :value="option"
-            v-for="(option, index) in options"
+            v-for="(option, index) in resultsOptions"
             :key="index"
             >{{ option }}</option
           >
@@ -51,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, onMounted } from "vue";
 import usePagination from "@/composables/use-pagination";
 
 export default defineComponent({
@@ -69,6 +72,10 @@ export default defineComponent({
       type: Number,
       default: 5,
     },
+    pages: {
+      type: Number,
+      default: 5,
+    },
   },
   setup(props, { emit }) {
     const {
@@ -77,8 +84,8 @@ export default defineComponent({
       updateNextPage,
       updatePreviousPage,
       pageCount,
+      resultsOptions,
     } = usePagination();
-    const options = [5, 10, 20];
     const selectedOption = ref<number>(props.option);
 
     function handlePreviousPage() {
@@ -95,12 +102,16 @@ export default defineComponent({
       }
     }
 
+    onMounted(() => {
+      pageCount.value = props.pages;
+    });
+
     return {
       updatePageNumber,
       currentPage,
       handlePreviousPage,
       handleNextPage,
-      options,
+      resultsOptions,
       selectedOption,
       pageCount,
     };
