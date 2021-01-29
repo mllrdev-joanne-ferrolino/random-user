@@ -7,13 +7,13 @@ export default () => {
   const isLoading = ref<boolean>(false);
   const data = ref<IUser[]>([]);
   const error = ref<string>("");
-  const resultsPerPage = ref<number>(5);
+  const usersPerPage = ref<number>(5);
   const pageNumber = ref<number>(1);
 
-  async function execute(pageNumber: number, results: number) {
+  async function fetchUsers(pageNumber: number, results: number) {
     isLoading.value = true;
     try {
-      const response = await userService.fetchUsersByPage(pageNumber, results);
+      const response = await userService.getUsersByPage(pageNumber, results);
       if (response) {
         data.value = response.data.results.map(toUser);
       }
@@ -24,17 +24,17 @@ export default () => {
     isLoading.value = false;
   }
 
-  function updateResults(option: number) {
-    resultsPerPage.value = option;
+  function updateUsers(option: number) {
+    usersPerPage.value = option;
   }
 
   return {
     isLoading,
     data,
-    execute,
+    fetchUsers,
     error,
-    resultsPerPage,
-    updateResults,
+    usersPerPage,
+    updateUsers,
     pageNumber,
   };
 };

@@ -60,10 +60,6 @@ import usePagination from "@/composables/use-pagination";
 export default defineComponent({
   name: "pagination",
   props: {
-    totalRecords: {
-      type: Number,
-      default: 0,
-    },
     pageNumber: {
       type: Number,
       default: 1,

@@ -15,11 +15,7 @@
         :user="item"
       ></user-item>
     </div>
-    <pagination
-      :totalRecords="resultsPerPage"
-      @pageNumber="loadUsers"
-      @option="updateResults"
-    >
+    <pagination @pageNumber="loadUsers" @option="updateUsers">
       <template #previous>Previous</template>
       <template #next>Next</template>
     </pagination>
@@ -27,10 +23,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, onMounted } from "vue";
 import UserItem from "@/components/UserItem.vue";
 import Pagination from "@/components/Pagination.vue";
-import useFetchUsers from "@/composables/use-fetch-users";
+import useFetchUsers from "@/composables/use-users";
 
 export default defineComponent({
   name: "UsersPage",
@@ -43,14 +39,14 @@ export default defineComponent({
       isLoading: loading,
       data,
       error,
-      execute: fetchUsers,
-      resultsPerPage,
-      updateResults,
+      fetchUsers,
+      usersPerPage,
+      updateUsers,
       pageNumber,
     } = useFetchUsers();
 
     function loadUsers(pageNumber: number) {
-      fetchUsers(pageNumber, resultsPerPage.value);
+      fetchUsers(pageNumber, usersPerPage.value);
     }
     onMounted(() => {
       loadUsers(pageNumber.value);
@@ -60,9 +56,9 @@ export default defineComponent({
       loading,
       data,
       error,
-      resultsPerPage,
+      usersPerPage,
       loadUsers,
-      updateResults,
+      updateUsers,
     };
   },
 });
