@@ -12,7 +12,7 @@
         >
           <option
             :value="option"
-            v-for="(option, index) in resultsOptions"
+            v-for="(option, index) in pageResultsOptions"
             :key="index"
             >{{ option }}</option
           >
@@ -80,7 +80,7 @@ export default defineComponent({
       updateNextPage,
       updatePreviousPage,
       pageCount,
-      resultsOptions,
+      pageResultsOptions,
     } = usePagination();
     const selectedOption = ref<number>(props.option);
 
@@ -107,7 +107,7 @@ export default defineComponent({
       currentPage,
       handlePreviousPage,
       handleNextPage,
-      resultsOptions,
+      pageResultsOptions,
       selectedOption,
       pageCount,
     };

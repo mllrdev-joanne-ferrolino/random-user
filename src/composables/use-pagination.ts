@@ -3,7 +3,7 @@ import { ref } from "vue";
 export default () => {
   const currentPage = ref<number>(1);
   const pageCount = ref<number>(5);
-  const resultsOptions = [5, 10, 20];
+  const pageResultsOptions = [5, 10, 20];
 
   function updatePageNumber(pageNumber: number) {
     currentPage.value = pageNumber;
@@ -23,6 +23,6 @@ export default () => {
     updatePageNumber,
     updateNextPage,
     updatePreviousPage,
-    resultsOptions,
+    pageResultsOptions,
   };
 };
