@@ -14,14 +14,13 @@ export default () => {
     isLoading.value = true;
     try {
       const response = await userService.getUsersByPage(pageNumber, results);
-      if (response) {
-        data.value = response.data.results.map(toUser);
-      }
+      data.value = response.data.results.map(toUser);
     } catch (err) {
       console.log(err);
       error.value = err.message;
+    } finally {
+      isLoading.value = false;
     }
-    isLoading.value = false;
   }
 
   function updateUsers(option: number) {
