@@ -3,10 +3,12 @@
     <div v-if="loading" class="message">
       <p>Loading...</p>
     </div>
-    <div v-if="error" class="message">Error: {{ error }}</div>
+    <div v-if="error" class="message">
+      {{ error.name }}: {{ error.message }}
+    </div>
     <div
       v-if="!loading && data && data.length && !error"
-      class="mx-auto flex flex-col w-3/4 container space-y-4"
+      class="mx-auto  my-8 flex flex-col w-3/4 container space-y-4"
     >
       <div class="text-lg font-semibold text-left">Users</div>
       <user-item
@@ -26,7 +28,7 @@
 import { defineComponent, onMounted } from "vue";
 import UserItem from "@/components/UserItem.vue";
 import Pagination from "@/components/Pagination.vue";
-import useFetchUsers from "@/composables/use-users";
+import useUsers from "@/composables/use-users";
 
 export default defineComponent({
   name: "UsersPage",
@@ -38,12 +40,12 @@ export default defineComponent({
     const {
       isLoading: loading,
       data,
-      error,
+      errorMessage: error,
       fetchUsers,
       usersPerPage,
       updateUsers,
       pageNumber,
-    } = useFetchUsers();
+    } = useUsers();
 
     function loadUsers(pageNumber: number) {
       fetchUsers(pageNumber, usersPerPage.value);
