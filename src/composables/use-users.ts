@@ -6,34 +6,27 @@ import toUser from "@/factory/user.factory.ts";
 export default () => {
   const isLoading = ref<boolean>(false);
   const data = ref<IUser[]>([]);
-  const errorMessage = ref<string>("");
-  const usersPerPage = ref<number>(5);
-  const pageNumber = ref<number>(1);
+  const error = ref<Error>({ name: "", message: "", stack: "" });
 
-  async function fetchUsers(pageNumber: number, results: number) {
+  async function fetchUsers(pageNumber: number, itemsPerPage: number) {
     try {
       isLoading.value = true;
-      const response = await userService.getUsersByPage(pageNumber, results);
+      const response = await userService.getUsersByPage(
+        pageNumber,
+        itemsPerPage
+      );
       data.value = response.data.results.map(toUser);
     } catch (err) {
-      console.log(err);
-      errorMessage.value = err.message;
+      error.value = { name: err.name, message: err.message, stack: err.stack };
     } finally {
       isLoading.value = false;
     }
-  }
-
-  function updateUsers(option: number) {
-    usersPerPage.value = option;
   }
 
   return {
     isLoading,
     data,
     fetchUsers,
-    errorMessage,
-    usersPerPage,
-    updateUsers,
-    pageNumber,
+    error,
   };
 };

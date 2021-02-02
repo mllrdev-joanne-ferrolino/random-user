@@ -9,7 +9,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: RouteNames.USERS,
-    component: loadView("UsersPage"),
+    component: loadView("users-page"),
   },
 ];
 
