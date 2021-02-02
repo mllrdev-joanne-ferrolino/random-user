@@ -67,7 +67,7 @@ export default defineComponent({
       default: 5,
     },
   },
-  emits: ["changePageOption", "changeCurrentPage"],
+  emits: ["changeItemsPerPageOption", "changeCurrentPage"],
   setup(props, { emit }) {
     const {
       currentPage,
@@ -96,7 +96,7 @@ export default defineComponent({
 
     function handleItemsPerPage() {
       currentPage.value = 1;
-      emit("changePageOption", selectedOption.value);
+      emit("changeItemsPerPageOption", selectedOption.value);
       emit("changeCurrentPage", currentPage.value);
     }
 

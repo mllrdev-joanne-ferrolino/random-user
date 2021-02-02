@@ -16,7 +16,7 @@
     <user-pagination
       :pages="3"
       @changeCurrentPage="loadUsers"
-      @changePageOption="changeItemsPerPage"
+      @changeItemsPerPageOption="changeItemsPerPage"
     >
     </user-pagination>
   </div>
