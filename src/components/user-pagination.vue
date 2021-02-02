@@ -3,7 +3,7 @@
     <ul class="flex flex-row justify-center mr-5">
       <li class="page-header mr-5">
         <label class="mr-3 font-semibold">Results per page</label>
-        <select v-model="selectedOption" @change="handlePageOptions">
+        <select v-model="selectedOption" @change="handleItemsPerPage">
           <option
             v-for="(option, index) in itemsPerPageOptions"
             :key="index"
@@ -94,7 +94,7 @@ export default defineComponent({
       }
     }
 
-    function handlePageOptions() {
+    function handleItemsPerPage() {
       currentPage.value = 1;
       emit("changePageOption", selectedOption.value);
       emit("changeCurrentPage", currentPage.value);
@@ -112,7 +112,7 @@ export default defineComponent({
       itemsPerPage,
       selectedOption,
       pageCount,
-      handlePageOptions,
+      handleItemsPerPage,
       itemsPerPageOptions,
     };
   },
