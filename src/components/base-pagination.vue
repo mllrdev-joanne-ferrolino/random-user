@@ -19,25 +19,27 @@
       </li>
 
       <li>
-        <page-button :disabled="currentPage === 1" @click="handlePreviousPage"
-          >Previous</page-button
+        <base-button
+          :disabled="isButtonDisabled.previous"
+          @click="handlePreviousPage"
+          >Previous</base-button
         >
       </li>
       <li v-for="pageNumber in pageCount" :key="pageNumber">
-        <page-button
-          :selected="currentPage === pageNumber"
+        <base-button
+          :selected="isButtonSelected(pageNumber)"
           @click="
             updatePageNumber(pageNumber);
-            $emit('changeCurrentPage', currentPage);
+            $emit('update-page', currentPage);
           "
-          >{{ pageNumber }}</page-button
+          >{{ pageNumber }}</base-button
         >
       </li>
       <li>
-        <page-button
-          :disabled="currentPage === pageCount"
+        <base-button
+          :disabled="isButtonDisabled.next"
           @click="handleNextPage(pageCount)"
-          >Next</page-button
+          >Next</base-button
         >
       </li>
     </ul>
@@ -47,18 +49,14 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
 import usePagination from "@/composables/use-pagination";
-import PageButton from "@/components/page-button.vue";
+import BaseButton from "@/components/base-button.vue";
 
 export default defineComponent({
   name: "UserPagination",
 
-  components: { PageButton },
+  components: { BaseButton },
   props: {
-    changeCurrentPage: {
-      type: Number,
-      default: 1,
-    },
-    changePageOption: {
+    pageItems: {
       type: Number,
       default: 5,
     },
@@ -67,7 +65,7 @@ export default defineComponent({
       default: 5,
     },
   },
-  emits: ["changeItemsPerPageOption", "changeCurrentPage"],
+  emits: ["update-page", "update:pageItems"],
   setup(props, { emit }) {
     const {
       currentPage,
@@ -75,29 +73,31 @@ export default defineComponent({
       incrementPageNumber,
       decrementPageNumber,
       pageCount,
-      itemsPerPage,
       itemsPerPageOptions,
+      isButtonDisabled,
+      isButtonSelected,
     } = usePagination();
-    const selectedOption = ref<number>(props.changePageOption);
+
+    const selectedOption = ref<number>(props.pageItems);
 
     function handlePreviousPage() {
       if (currentPage.value > 1) {
         decrementPageNumber();
-        emit("changeCurrentPage", currentPage.value);
+        emit("update-page", currentPage.value);
       }
     }
 
     function handleNextPage(pageCount: number) {
       if (currentPage.value < pageCount) {
         incrementPageNumber();
-        emit("changeCurrentPage", currentPage.value);
+        emit("update-page", currentPage.value);
       }
     }
 
     function handleItemsPerPage() {
       currentPage.value = 1;
-      emit("changeItemsPerPageOption", selectedOption.value);
-      emit("changeCurrentPage", currentPage.value);
+      emit("update:pageItems", selectedOption.value);
+      emit("update-page", currentPage.value);
     }
 
     onMounted(() => {
@@ -106,14 +106,15 @@ export default defineComponent({
 
     return {
       updatePageNumber,
-      currentPage,
       handlePreviousPage,
       handleNextPage,
-      itemsPerPage,
       selectedOption,
       pageCount,
       handleItemsPerPage,
       itemsPerPageOptions,
+      currentPage,
+      isButtonDisabled,
+      isButtonSelected,
     };
   },
 });

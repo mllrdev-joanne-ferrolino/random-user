@@ -1,7 +1,7 @@
 import { ref } from "vue";
 import { IUser } from "@/models/IUser";
 import { userService } from "@/services/user.service";
-import toUser from "@/factory/user.factory.ts";
+import toUserViewModel from "@/factory/user.factory.ts";
 
 export default () => {
   const isLoading = ref<boolean>(false);
@@ -15,7 +15,7 @@ export default () => {
         pageNumber,
         itemsPerPage
       );
-      data.value = response.data.results.map(toUser);
+      data.value = response.data.results.map(toUserViewModel);
     } catch (err) {
       error.value = { name: err.name, message: err.message, stack: err.stack };
     } finally {

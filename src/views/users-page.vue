@@ -13,19 +13,19 @@
       <div class="text-lg font-semibold text-left">Users</div>
       <user-list :data="data"></user-list>
     </div>
-    <user-pagination
+    <base-pagination
+      v-model:page-items="itemsPerPage"
       :pages="3"
-      @changeCurrentPage="loadUsers"
-      @changeItemsPerPageOption="changeItemsPerPage"
+      @update-page="loadUsers"
     >
-    </user-pagination>
+    </base-pagination>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted } from "vue";
 import UserList from "@/components/user-list.vue";
-import UserPagination from "@/components/user-pagination.vue";
+import BasePagination from "@/components/base-pagination.vue";
 import useUsers from "@/composables/use-users";
 import usePagination from "@/composables/use-pagination";
 
@@ -33,11 +33,11 @@ export default defineComponent({
   name: "UsersPage",
   components: {
     UserList,
-    UserPagination,
+    BasePagination,
   },
   setup() {
     const { isLoading, data, fetchUsers, error } = useUsers();
-    const { changeItemsPerPage, itemsPerPage, currentPage } = usePagination();
+    const { itemsPerPage, currentPage } = usePagination();
 
     function loadUsers(pageNumber: number) {
       fetchUsers(pageNumber, itemsPerPage.value);
@@ -51,7 +51,6 @@ export default defineComponent({
       data,
       itemsPerPage,
       loadUsers,
-      changeItemsPerPage,
       error,
     };
   },
