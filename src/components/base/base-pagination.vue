@@ -8,8 +8,9 @@
             v-for="(option, index) in itemsPerPageOptions"
             :key="index"
             :value="option"
-            >{{ option }}</option
           >
+            {{ option }}
+          </option>
         </select>
       </li>
       <li class="page-header">
@@ -22,37 +23,40 @@
         <base-button
           :disabled="isButtonDisabled.previous"
           @click="handlePreviousPage"
-          >Previous</base-button
         >
+          Previous
+        </base-button>
       </li>
       <li v-for="pageNumber in pageCount" :key="pageNumber">
         <base-button
-          :selected="isButtonSelected(pageNumber)"
+          :selected="pageNumber === currentPage"
           @click="
             updatePageNumber(pageNumber);
-            $emit('update-page', currentPage);
+            $emit('page-update', currentPage);
           "
-          >{{ pageNumber }}</base-button
         >
+          {{ pageNumber }}
+        </base-button>
       </li>
       <li>
         <base-button
           :disabled="isButtonDisabled.next"
           @click="handleNextPage(pageCount)"
-          >Next</base-button
         >
+          Next
+        </base-button>
       </li>
     </ul>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from "vue";
-import usePagination from "@/composables/use-pagination";
-import BaseButton from "@/components/base-button.vue";
+import { defineComponent, ref, onMounted, computed } from 'vue';
+import usePagination from '@/composables/use-pagination';
+import BaseButton from '@/components/base/base-button.vue';
 
 export default defineComponent({
-  name: "UserPagination",
+  name: 'UserPagination',
 
   components: { BaseButton },
   props: {
@@ -64,8 +68,12 @@ export default defineComponent({
       type: Number,
       default: 5,
     },
+    page: {
+      type: Number,
+      default: 1,
+    },
   },
-  emits: ["update-page", "update:pageItems"],
+  emits: ['page-update', 'update:pageItems'],
   setup(props, { emit }) {
     const {
       currentPage,
@@ -74,30 +82,32 @@ export default defineComponent({
       decrementPageNumber,
       pageCount,
       itemsPerPageOptions,
-      isButtonDisabled,
-      isButtonSelected,
     } = usePagination();
+    const isButtonDisabled = computed(() => ({
+      previous: currentPage.value === 1,
+      next: currentPage.value === pageCount.value,
+    }));
 
     const selectedOption = ref<number>(props.pageItems);
 
     function handlePreviousPage() {
       if (currentPage.value > 1) {
         decrementPageNumber();
-        emit("update-page", currentPage.value);
+        emit('page-update', currentPage.value);
       }
     }
 
     function handleNextPage(pageCount: number) {
       if (currentPage.value < pageCount) {
         incrementPageNumber();
-        emit("update-page", currentPage.value);
+        emit('page-update', currentPage.value);
       }
     }
 
     function handleItemsPerPage() {
       currentPage.value = 1;
-      emit("update:pageItems", selectedOption.value);
-      emit("update-page", currentPage.value);
+      emit('update:pageItems', selectedOption.value);
+      emit('page-update', currentPage.value);
     }
 
     onMounted(() => {
@@ -114,7 +124,6 @@ export default defineComponent({
       itemsPerPageOptions,
       currentPage,
       isButtonDisabled,
-      isButtonSelected,
     };
   },
 });
