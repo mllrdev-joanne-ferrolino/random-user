@@ -1,21 +1,21 @@
-import { ref } from "vue";
-import { IUser } from "@/models/IUser";
-import { userService } from "@/services/user.service";
-import toUserViewModel from "@/factory/user.factory.ts";
+import { ref } from 'vue';
+import { IUser } from '@/models/IUser';
+import { userService } from '@/services/user.service';
+import toUserViewModel from '@/factory/user.factory.ts';
 
 export default () => {
   const isLoading = ref<boolean>(false);
   const data = ref<IUser[]>([]);
-  const error = ref<Error>({ name: "", message: "", stack: "" });
+  const error = ref<Error>({ name: '', message: '', stack: '' });
 
   async function fetchUsers(pageNumber: number, itemsPerPage: number) {
     try {
       isLoading.value = true;
       const response = await userService.getUsersByPage(
         pageNumber,
-        itemsPerPage
+        itemsPerPage,
       );
-      data.value = response.data.results.map(toUserViewModel);
+      data.value = response.data.results.map((x: any) => toUserViewModel(x));
     } catch (err) {
       error.value = { name: err.name, message: err.message, stack: err.stack };
     } finally {

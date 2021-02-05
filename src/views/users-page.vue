@@ -16,21 +16,21 @@
     <base-pagination
       v-model:page-items="itemsPerPage"
       :pages="3"
-      @update-page="loadUsers"
-    >
-    </base-pagination>
+      :page="currentPage"
+      @page-update="loadUsers"
+    ></base-pagination>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from "vue";
-import UserList from "@/components/user-list.vue";
-import BasePagination from "@/components/base-pagination.vue";
-import useUsers from "@/composables/use-users";
-import usePagination from "@/composables/use-pagination";
+import { defineComponent, onMounted } from 'vue';
+import UserList from '@/components/user-list.vue';
+import BasePagination from '@/components/base/base-pagination.vue';
+import useUsers from '@/composables/use-users';
+import usePagination from '@/composables/use-pagination';
 
 export default defineComponent({
-  name: "UsersPage",
+  name: 'UsersPage',
   components: {
     UserList,
     BasePagination,
@@ -52,6 +52,7 @@ export default defineComponent({
       itemsPerPage,
       loadUsers,
       error,
+      currentPage,
     };
   },
 });
