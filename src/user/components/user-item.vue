@@ -20,11 +20,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import { IUser } from "@/models/IUser";
+import { defineComponent, PropType } from 'vue';
+import { IUser } from '@/models/IUser';
 
 export default defineComponent({
-  name: "user-item",
+  name: 'userItem',
   props: {
     user: {
       type: Object as PropType<IUser>,

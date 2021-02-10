@@ -3,7 +3,7 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 import App from './app.vue';
 
 import '@/assets/styles/tailwind.css';
-import '@/assets/styles/primevue';
+import '@/plugins/primevue';
 
 import registerBaseComponents from '@/shared/base';
 import { RouteNames } from '@/shared/constants/route-names';
