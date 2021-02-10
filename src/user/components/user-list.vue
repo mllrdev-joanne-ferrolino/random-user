@@ -9,9 +9,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
-import UserItem from "@/components/user-item.vue";
-import { IUser } from "@/models/IUser";
+import { defineComponent, PropType } from 'vue';
+import UserItem from '@/user/components/user-item.vue';
+import { IUser } from '@/models/IUser';
 
 export default defineComponent({
   components: {

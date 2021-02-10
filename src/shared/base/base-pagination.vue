@@ -21,11 +21,11 @@
 
       <li>
         <base-button
+          class="p-button-text"
+          icon="pi pi-chevron-left"
           :disabled="isButtonDisabled.previous"
           @click="handlePreviousPage"
-        >
-          Previous
-        </base-button>
+        ></base-button>
       </li>
       <li v-for="pageNumber in pageCount" :key="pageNumber">
         <base-button
@@ -40,11 +40,11 @@
       </li>
       <li>
         <base-button
+          class="p-button-text"
+          icon="pi pi-chevron-right"
           :disabled="isButtonDisabled.next"
           @click="handleNextPage(pageCount)"
-        >
-          Next
-        </base-button>
+        ></base-button>
       </li>
     </ul>
   </div>
@@ -53,12 +53,9 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import usePagination from '@/composables/use-pagination';
-import BaseButton from '@/components/base/base-button.vue';
 
 export default defineComponent({
   name: 'UserPagination',
-
-  components: { BaseButton },
   props: {
     pageItems: {
       type: Number,
@@ -74,6 +71,7 @@ export default defineComponent({
     },
   },
   emits: ['page-update', 'update:pageItems'],
+
   setup(props, { emit }) {
     const {
       currentPage,

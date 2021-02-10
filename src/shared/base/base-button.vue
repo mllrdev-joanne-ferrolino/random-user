@@ -1,18 +1,30 @@
 <template>
   <div>
-    <button
+    <!-- <button
       class="link"
       :class="disabled ? 'disabled' : selected ? 'selected' : 'active'"
     >
       <slot></slot>
-    </button>
+    </button> -->
+    <Button
+      :icon="icon"
+      :class="
+        disabled ? 'disabled' : selected ? 'p-button-outlined' : 'p-button-text'
+      "
+    >
+      <slot></slot>
+    </Button>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue';
+import Button from 'primevue/button';
 
 export default defineComponent({
+  components: {
+    Button,
+  },
   props: {
     disabled: {
       type: Boolean,
@@ -21,6 +33,10 @@ export default defineComponent({
     selected: {
       type: Boolean,
       default: false,
+    },
+    icon: {
+      type: String,
+      default: '',
     },
   },
   setup() {
@@ -33,9 +49,9 @@ export default defineComponent({
 .page-button {
   @apply px-3 py-2 mx-1 rounded-lg  text-sm;
 }
-.disabled {
+/* .disabled {
   @apply page-button bg-gray-200 text-gray-500 cursor-default;
-}
+} */
 
 .active {
   @apply page-button bg-gray-200 hover:bg-blue-200 hover:text-gray-600 cursor-pointer;
@@ -47,5 +63,8 @@ export default defineComponent({
 
 .link {
   @apply flex items-center font-bold focus:outline-none;
+}
+button {
+  margin-right: 0.5rem;
 }
 </style>
