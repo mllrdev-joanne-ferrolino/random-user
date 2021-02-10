@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 import UserList from '@/user/components/user-list.vue';
-import useUsers from '@/composables/use-users';
+import useUsers from '../composables/use-users';
 import usePagination from '@/composables/use-pagination';
 
 export default defineComponent({
