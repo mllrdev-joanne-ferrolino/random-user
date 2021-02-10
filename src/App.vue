@@ -1,26 +1,30 @@
 <template>
-  <router-view />
+	<div id="app">
+		<SideBar></SideBar>
+
+		<div class="app-container">
+			<img alt="Vue logo" src="./assets/primevue-logo.png" />
+			<form @submit.prevent="greet">
+				<InputText v-model="text" type="text" />
+				<Button type="submit" label="Submit" />
+				<h3>{{ message }}</h3>
+			</form>
+		</div>
+	</div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Sidebar from 'primevue/sidebar';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default defineComponent({
+	name: 'App',
+	components: {
+		Sidebar,
+		InputText,
+		Button,
+	},
+});
+</script>

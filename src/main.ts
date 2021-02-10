@@ -1,34 +1,23 @@
+import dashboardModule from '@/home';
+
 import { createApp } from 'vue';
-import { createRouter, createWebHashHistory } from 'vue-router';
-import App from './app.vue';
-
-import '@/assets/styles/tailwind.css';
-import '@/plugins/primevue';
-
-import registerBaseComponents from '@/shared/base';
-import { RouteNames } from '@/shared/constants/route-names';
-
-import userModule from '@/user';
-
+import AppComponent from './app.vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 import PrimeVue from 'primevue/config';
 
-const router = createRouter({
-  history: createWebHashHistory(),
-  routes: [
-    {
-      path: '/',
-      component: App,
-      beforeEnter: (to, from, next) => {
-        next({ name: RouteNames.USERS });
-      },
-    },
-  ],
+const routes: Array<RouteConfig> = [
+	{
+		path: '/',
+		component: AppComponent,
+	},
+];
+
+const router = new VueRouter({
+	routes,
 });
 
-const app = createApp(App).use(PrimeVue);
+const app = createApp(AppComponent).use(PrimeVue);
 
-userModule({ app, router });
-app.use(router);
-registerBaseComponents(app);
-app.config.globalProperties.$routeName = RouteNames;
+dashboardModule({ app, router });
+
 app.mount('#app');

@@ -1,4 +1,4 @@
-# random-user
+# primevue-typescript-quickstart
 
 ## Project setup
 ```
