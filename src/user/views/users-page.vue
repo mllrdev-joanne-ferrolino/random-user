@@ -1,5 +1,5 @@
 <template>
-  <base-layout>
+  <div>
     <div v-if="isLoading" class="message">
       <p>Loading...</p>
     </div>
@@ -20,7 +20,7 @@
       :page="currentPage"
       @page-update="loadUsers"
     ></base-pagination>
-  </base-layout>
+  </div>
 </template>
 
 <script lang="ts">
