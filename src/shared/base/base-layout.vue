@@ -1,16 +1,16 @@
 <template>
   <div :class="containerClass">
-    <div class="layout-topbar  bg-green-200">
+    <transition name="layout-sidebar">
+      <div v-if="activeMenu" class="layout-sidebar  bg-blue-200"></div>
+    </transition>
+    <div class="layout-topbar  bg-green-200 block">
       <base-button
         icon="pi pi-bars"
         @click="onMenuToggle"
         class="text-left"
       ></base-button>
     </div>
-    <transition name="layout-sidebar">
-      <div v-if="activeMenu" class="layout-sidebar  bg-blue-200"></div>
-    </transition>
-    <div class="layout-main">
+    <div class="layout-main block">
       <slot></slot>
     </div>
   </div>
@@ -50,6 +50,9 @@ export default defineComponent({
     .layout-topbar {
       margin-left: 160px;
     }
+    .layout-main {
+      margin-left: 160px;
+    }
   }
 }
 
@@ -59,7 +62,10 @@ export default defineComponent({
   transition: margin-left 0.5s;
 }
 .layout-main {
-  margin-left: 160px;
+  margin-left: 0;
+  position: absolute;
+  margin-top: 60px;
+  width: calc(100% - 160px);
 }
 .layout-sidebar {
   width: 160px;
